@@ -580,14 +580,11 @@ bot.action('continue',async (ctx) =>{
         db.collection('info').updateOne({user:ctx.from.id},{$set:{'balance':finalBal}})
         var url = 'https://full2sms.in/api/v1/disburse/paytm/?mid='+mid+'&mkey='+mkey+'&guid='+swg+'&mobile='+wallet+'&amount='+amo.toString()+'&info='+comment;
         var res = await axios.post(url)
-        var stat = JSON.parse(res);
-        if (stat.status == "success"){
+        var stat920 = JSON.parse(res);
             var text = "*🟢 Withdraw Request Processed 🟢\n\n💰 Amount: "+toWith+" "+curr+" (Tax : %"+tax+")\n🗂️ Paytm Wallet: *`"+wallet+"`"
             var payText = "*🟢 Withdraw Request Processed 🟢\n👷 User: *["+ctx.from.id+"](tg://user?id="+ctx.from.id+")*\n\n💰 Amount: "+toWith+" "+curr+" (Tax : %"+tax+")\n🗂️ Paytm Wallet: *`"+wallet+"`\n\n*🟢 Bot: @"+ctx.botInfo.username+"*"
-        }else{
-            var text = "*📛 Withdraw Request Rejected 📛\n\n💰 Amount : "+toWith+" "+curr+" (Tax : %"+tax+")\n🗂️ Reason: *"+stat+""
-            var wasteoo12 = "*🟢 Withdraw Request Processed 🟢\n👷 User: *["+ctx.from.id+"](tg://user?id="+ctx.from.id+")*\n\n💰 Amount: "+toWith+" "+curr+" (Tax : %"+tax+")\n🗂️ Paytm Wallet: *`"+wallet+"`\n\n*🟢 Bot: @"+ctx.botInfo.username+"*"
-        }
+        
+            
         ctx.replyWithMarkdown(text,{reply_markup:{keyboard:mainkey,resize_keyboard:true}})
         bot.telegram.sendMessage(admin[0].paycha,payText,{parse_mode:'Markdown'}).catch(e => console.log(e.response.description))
         let pData = await db.collection('admin').find({Payout:'Payout'}).toArray()
